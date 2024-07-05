@@ -10,7 +10,9 @@ export class Blog {
   id: string;
 
   @Field(() => String)
-  @Column('text')
+  @Column('text', {
+    unique: true,
+  })
   title: string;
 
   @Field(() => String)

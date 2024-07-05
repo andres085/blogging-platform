@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateBlogInput } from './dto/create-blog.input';
@@ -12,9 +16,13 @@ export class BlogsService {
   ) {}
 
   async create(createBlogInput: CreateBlogInput): Promise<Blog> {
-    const newBlog = this.blogsRepository.create(createBlogInput);
+    try {
+      const newBlog = this.blogsRepository.create(createBlogInput);
 
-    return await this.blogsRepository.save(newBlog);
+      return await this.blogsRepository.save(newBlog);
+    } catch (error) {
+      this.handleDBErrors(error);
+    }
   }
 
   findAll() {
@@ -31,5 +39,12 @@ export class BlogsService {
 
   remove(id: number) {
     return `This action removes a #${id} blog`;
+  }
+
+  private handleDBErrors(error: any): never {
+    if (error.code === '23505') throw new BadRequestException(error.detail);
+
+    console.error(error);
+    throw new InternalServerErrorException('Error, please check server logs');
   }
 }
