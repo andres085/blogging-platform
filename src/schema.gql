@@ -1,0 +1,43 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Blog {
+  id: ID!
+  title: String!
+  body: String!
+  tags: [BlogTags!]!
+}
+
+"""These are the tags that a blog post can have."""
+enum BlogTags {
+  BACKEND
+  FRONTEND
+  WEB_DEVELOPMENT
+  SOFTWARE_ENGINEERING
+  DEVOPS
+  BOOKS
+  TUTORIALS
+}
+
+type Query {
+  blogs: [Blog!]!
+  blog(id: Int!): Blog!
+}
+
+type Mutation {
+  createBlog(createBlogInput: CreateBlogInput!): Blog!
+  updateBlog(updateBlogInput: UpdateBlogInput!): Blog!
+  removeBlog(id: Int!): Blog!
+}
+
+input CreateBlogInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateBlogInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
