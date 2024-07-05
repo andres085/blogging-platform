@@ -33,13 +33,20 @@ export class BlogsService {
     const foundBlog = await this.blogsRepository.findOneBy({ id });
 
     if (!foundBlog)
-      throw new NotFoundException(`Blog with id: ${id} not found.`);
+      throw new NotFoundException(`Blog with id ${id} not found.`);
 
     return foundBlog;
   }
 
-  update(id: number, updateBlogInput: UpdateBlogInput) {
-    return `This action updates a #${id} blog`;
+  async update(id: string, updateBlogInput: UpdateBlogInput): Promise<Blog> {
+    await this.findOne(id);
+
+    const foundBlog = await this.blogsRepository.preload(updateBlogInput);
+
+    if (!foundBlog)
+      throw new NotFoundException(`Blog with id ${id} not found.`);
+
+    return this.blogsRepository.save(foundBlog);
   }
 
   remove(id: number) {

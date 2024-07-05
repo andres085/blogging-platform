@@ -22,12 +22,16 @@ export class BlogsResolver {
   }
 
   @Query(() => Blog, { name: 'getBlog' })
-  findOne(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
+  async findOne(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<Blog> {
     return this.blogsService.findOne(id);
   }
 
   @Mutation(() => Blog)
-  updateBlog(@Args('updateBlogInput') updateBlogInput: UpdateBlogInput) {
+  async updateBlog(
+    @Args('updateBlogInput') updateBlogInput: UpdateBlogInput,
+  ): Promise<Blog> {
     return this.blogsService.update(updateBlogInput.id, updateBlogInput);
   }
 

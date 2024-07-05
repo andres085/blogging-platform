@@ -41,5 +41,5 @@ input UpdateBlogInput {
   title: String
   body: String
   tags: [BlogTags!]
-  id: Int!
+  id: ID!
 }
