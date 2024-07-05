@@ -1,5 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto';
 import { User } from './entities/user.entity';
@@ -11,8 +16,27 @@ export class AuthService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = this.userRepository.create(createUserDto);
+    const { password, ...userData } = createUserDto;
+    try {
+      const newUser = this.userRepository.create({
+        ...userData,
+        password: bcrypt.hashSync(password, +process.env.SALT_ROUNDS),
+      });
 
-    return await this.userRepository.save(newUser);
+      await this.userRepository.save(newUser);
+
+      delete newUser.password;
+
+      return newUser;
+    } catch (error) {
+      this.handleDBErrors(error);
+    }
+  }
+
+  private handleDBErrors(error: any): never {
+    if (error.code === '23505') throw new BadRequestException(error.detail);
+
+    console.error(error);
+    throw new InternalServerErrorException('Error, please check server logs');
   }
 }
