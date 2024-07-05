@@ -10,7 +10,7 @@ export class User {
   })
   email: string;
 
-  @Column('text')
+  @Column('text', { select: false })
   password: string;
 
   @Column('text')
@@ -18,6 +18,7 @@ export class User {
 
   @Column('bool', {
     default: true,
+    select: false,
   })
   isActive: boolean;
 
