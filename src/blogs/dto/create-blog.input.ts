@@ -1,7 +1,18 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsArray, IsString } from 'class-validator';
+import { BlogTags } from '../enums/tags.enums';
 
 @InputType()
 export class CreateBlogInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field(() => String)
+  @IsString()
+  title: string;
+
+  @Field(() => String)
+  @IsString()
+  body: string;
+
+  @Field(() => [BlogTags])
+  @IsArray()
+  tags: BlogTags[];
 }

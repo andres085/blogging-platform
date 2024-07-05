@@ -32,12 +32,14 @@ type Mutation {
 }
 
 input CreateBlogInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  title: String!
+  body: String!
+  tags: [BlogTags!]!
 }
 
 input UpdateBlogInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  title: String
+  body: String
+  tags: [BlogTags!]
   id: Int!
 }
