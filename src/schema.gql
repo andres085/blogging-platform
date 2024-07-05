@@ -21,8 +21,8 @@ enum BlogTags {
 }
 
 type Query {
-  blogs: [Blog!]!
-  blog(id: Int!): Blog!
+  getAllBlogs: [Blog!]!
+  getBlog(id: ID!): Blog!
 }
 
 type Mutation {

@@ -1,4 +1,5 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ParseUUIDPipe } from '@nestjs/common';
+import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BlogsService } from './blogs.service';
 import { CreateBlogInput } from './dto/create-blog.input';
 import { UpdateBlogInput } from './dto/update-blog.input';
@@ -8,20 +9,20 @@ import { Blog } from './entities/blog.entity';
 export class BlogsResolver {
   constructor(private readonly blogsService: BlogsService) {}
 
-  @Mutation(() => Blog)
+  @Mutation(() => Blog, { name: 'createBlog' })
   async createBlog(
     @Args('createBlogInput') createBlogInput: CreateBlogInput,
   ): Promise<Blog> {
     return this.blogsService.create(createBlogInput);
   }
 
-  @Query(() => [Blog], { name: 'blogs' })
-  findAll() {
+  @Query(() => [Blog], { name: 'getAllBlogs' })
+  async findAll(): Promise<Blog[]> {
     return this.blogsService.findAll();
   }
 
-  @Query(() => Blog, { name: 'blog' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => Blog, { name: 'getBlog' })
+  findOne(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.blogsService.findOne(id);
   }
 

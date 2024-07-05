@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -18,19 +19,23 @@ export class BlogsService {
   async create(createBlogInput: CreateBlogInput): Promise<Blog> {
     try {
       const newBlog = this.blogsRepository.create(createBlogInput);
-
       return await this.blogsRepository.save(newBlog);
     } catch (error) {
       this.handleDBErrors(error);
     }
   }
 
-  findAll() {
-    return `This action returns all blogs`;
+  async findAll(): Promise<Blog[]> {
+    return await this.blogsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} blog`;
+  async findOne(id: string): Promise<Blog> {
+    const foundBlog = await this.blogsRepository.findOneBy({ id });
+
+    if (!foundBlog)
+      throw new NotFoundException(`Blog with id: ${id} not found.`);
+
+    return foundBlog;
   }
 
   update(id: number, updateBlogInput: UpdateBlogInput) {
