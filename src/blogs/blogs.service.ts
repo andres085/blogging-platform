@@ -39,8 +39,26 @@ export class BlogsService {
     return foundBlog;
   }
 
-  async update(id: string, updateBlogInput: UpdateBlogInput): Promise<Blog> {
-    await this.findOne(id);
+  async findOneByUser(id: string, user: User): Promise<Blog> {
+    const foundBlog = await this.blogsRepository.findOne({
+      where: {
+        id,
+        user: { id: user.id },
+      },
+    });
+
+    if (!foundBlog)
+      throw new NotFoundException(`Blog with id ${id} not found.`);
+
+    return foundBlog;
+  }
+
+  async update(
+    id: string,
+    updateBlogInput: UpdateBlogInput,
+    user: User,
+  ): Promise<Blog> {
+    await this.findOneByUser(id, user);
 
     const foundBlog = await this.blogsRepository.preload(updateBlogInput);
 
@@ -50,8 +68,8 @@ export class BlogsService {
     return this.blogsRepository.save(foundBlog);
   }
 
-  remove(id: string) {
-    return this.update(id, { id, isActive: false });
+  async remove(id: string, user: User): Promise<Blog> {
+    return this.update(id, { id, isActive: false }, user);
   }
 
   private handleDBErrors(error: any): never {

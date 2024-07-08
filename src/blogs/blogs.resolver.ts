@@ -36,12 +36,16 @@ export class BlogsResolver {
   @Mutation(() => Blog, { name: 'updateBlog' })
   async updateBlog(
     @Args('updateBlogInput') updateBlogInput: UpdateBlogInput,
+    @CurrentUser() user: User,
   ): Promise<Blog> {
-    return this.blogsService.update(updateBlogInput.id, updateBlogInput);
+    return this.blogsService.update(updateBlogInput.id, updateBlogInput, user);
   }
 
   @Mutation(() => Blog, { name: 'deactivateBlog' })
-  async removeBlog(@Args('id', { type: () => ID }) id: string): Promise<Blog> {
-    return this.blogsService.remove(id);
+  async removeBlog(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() user: User,
+  ): Promise<Blog> {
+    return this.blogsService.remove(id, user);
   }
 }
