@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../../auth/entities/user.entity';
 import { BlogTags } from '../enums/tags.enums';
 
 @Entity({ name: 'blogs' })
@@ -30,4 +31,7 @@ export class Blog {
     array: true,
   })
   tags: BlogTags[];
+
+  @ManyToOne(() => User, (user) => user.blogs, { lazy: true })
+  user: User;
 }

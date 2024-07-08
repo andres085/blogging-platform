@@ -3,8 +3,10 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Blog } from '../../blogs/entities/blog.entity';
 
 @Entity('users')
 export class User {
@@ -33,6 +35,9 @@ export class User {
     default: ['reader'],
   })
   roles: string[];
+
+  @OneToMany(() => Blog, (blog) => blog.user, { lazy: true })
+  blogs: Blog[];
 
   @BeforeInsert()
   sanitizeEmailBeforeInsert() {
