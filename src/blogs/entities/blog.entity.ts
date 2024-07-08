@@ -19,6 +19,12 @@ export class Blog {
   @Column('text')
   body: string;
 
+  @Field(() => Boolean)
+  @Column('bool', {
+    default: false,
+  })
+  isActive: boolean;
+
   @Field(() => [BlogTags])
   @Column('text', {
     array: true,

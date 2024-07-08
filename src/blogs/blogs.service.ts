@@ -49,8 +49,8 @@ export class BlogsService {
     return this.blogsRepository.save(foundBlog);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} blog`;
+  remove(id: string) {
+    return this.update(id, { id, isActive: false });
   }
 
   private handleDBErrors(error: any): never {

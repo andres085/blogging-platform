@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BlogsService } from './blogs.service';
 import { CreateBlogInput } from './dto/create-blog.input';
 import { UpdateBlogInput } from './dto/update-blog.input';
@@ -28,15 +28,15 @@ export class BlogsResolver {
     return this.blogsService.findOne(id);
   }
 
-  @Mutation(() => Blog)
+  @Mutation(() => Blog, { name: 'updateBlog' })
   async updateBlog(
     @Args('updateBlogInput') updateBlogInput: UpdateBlogInput,
   ): Promise<Blog> {
     return this.blogsService.update(updateBlogInput.id, updateBlogInput);
   }
 
-  @Mutation(() => Blog)
-  removeBlog(@Args('id', { type: () => Int }) id: number) {
+  @Mutation(() => Blog, { name: 'deactivateBlog' })
+  async removeBlog(@Args('id', { type: () => ID }) id: string): Promise<Blog> {
     return this.blogsService.remove(id);
   }
 }
