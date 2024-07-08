@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { BlogsModule } from './blogs/blogs.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { BlogsModule } from './blogs/blogs.module';
     }),
     AuthModule,
     BlogsModule,
+    SeedModule,
   ],
   controllers: [],
   providers: [],
