@@ -18,8 +18,7 @@ export class BlogsResolver {
     @Args('createBlogInput') createBlogInput: CreateBlogInput,
     @CurrentUser() user: User,
   ): Promise<Blog> {
-    console.log({ user });
-    return this.blogsService.create(createBlogInput);
+    return this.blogsService.create(createBlogInput, user);
   }
 
   @Query(() => [Blog], { name: 'getAllBlogs' })

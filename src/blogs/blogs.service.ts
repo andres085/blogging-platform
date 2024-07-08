@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { User } from '../auth/entities/user.entity';
 import { CreateBlogInput } from './dto/create-blog.input';
 import { UpdateBlogInput } from './dto/update-blog.input';
 import { Blog } from './entities/blog.entity';
@@ -16,9 +17,9 @@ export class BlogsService {
     @InjectRepository(Blog) private readonly blogsRepository: Repository<Blog>,
   ) {}
 
-  async create(createBlogInput: CreateBlogInput): Promise<Blog> {
+  async create(createBlogInput: CreateBlogInput, user: User): Promise<Blog> {
     try {
-      const newBlog = this.blogsRepository.create(createBlogInput);
+      const newBlog = this.blogsRepository.create({ ...createBlogInput, user });
       return await this.blogsRepository.save(newBlog);
     } catch (error) {
       this.handleDBErrors(error);
