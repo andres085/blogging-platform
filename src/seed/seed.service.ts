@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -9,14 +10,22 @@ import { BLOGS_DATA, USERS_DATA } from './data/seed-data';
 
 @Injectable()
 export class SeedService {
+  private isProd: boolean;
+
   constructor(
+    configService: ConfigService,
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     @InjectRepository(Blog) private readonly blogsRepository: Repository<Blog>,
     private readonly authService: AuthService,
     private readonly blogService: BlogsService,
-  ) {}
+  ) {
+    this.isProd = configService.get('ENVIRONMENT') === 'prod';
+  }
 
   async execute(): Promise<boolean> {
+    if (this.isProd)
+      throw new UnauthorizedException('We cannot run SEED on prod');
+
     await this.deleteDatabase();
 
     const user = await this.loadUsers();
