@@ -1,18 +1,24 @@
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { User } from '../auth/entities/user.entity';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { BlogsService } from './blogs.service';
 import { CreateBlogInput } from './dto/create-blog.input';
 import { UpdateBlogInput } from './dto/update-blog.input';
 import { Blog } from './entities/blog.entity';
 
 @Resolver(() => Blog)
+@UseGuards(JwtAuthGuard)
 export class BlogsResolver {
   constructor(private readonly blogsService: BlogsService) {}
 
   @Mutation(() => Blog, { name: 'createBlog' })
   async createBlog(
     @Args('createBlogInput') createBlogInput: CreateBlogInput,
+    @CurrentUser() user: User,
   ): Promise<Blog> {
+    console.log({ user });
     return this.blogsService.create(createBlogInput);
   }
 
