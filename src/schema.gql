@@ -1,0 +1,48 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Blog {
+  id: ID!
+  title: String!
+  body: String!
+  isActive: Boolean!
+  tags: [BlogTags!]!
+}
+
+"""These are the tags that a blog post can have."""
+enum BlogTags {
+  BACKEND
+  FRONTEND
+  WEB_DEVELOPMENT
+  SOFTWARE_ENGINEERING
+  DEVOPS
+  BOOKS
+  TUTORIALS
+}
+
+type Query {
+  getAllBlogs: [Blog!]!
+  getBlog(id: ID!): Blog!
+}
+
+type Mutation {
+  createBlog(createBlogInput: CreateBlogInput!): Blog!
+  updateBlog(updateBlogInput: UpdateBlogInput!): Blog!
+  deactivateBlog(id: ID!): Blog!
+}
+
+input CreateBlogInput {
+  title: String!
+  body: String!
+  isActive: Boolean!
+  tags: [BlogTags!]!
+}
+
+input UpdateBlogInput {
+  title: String
+  body: String
+  isActive: Boolean
+  tags: [BlogTags!]
+  id: ID!
+}
