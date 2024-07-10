@@ -1,10 +1,14 @@
-import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
-import { IsUUID } from 'class-validator';
-import { CreateCommentInput } from './create-comment.input';
+import { Field, ID, InputType } from '@nestjs/graphql';
+import { IsString, IsUUID, MaxLength } from 'class-validator';
 
 @InputType()
-export class UpdateCommentInput extends PartialType(CreateCommentInput) {
+export class UpdateCommentInput {
   @Field(() => ID)
   @IsUUID()
   id: string;
+
+  @Field(() => String)
+  @IsString()
+  @MaxLength(255)
+  comment: string;
 }

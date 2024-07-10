@@ -1,4 +1,8 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { User } from '../auth/entities/user.entity';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CommentsService } from './comments.service';
 import {
   CreateCommentInput,
@@ -8,14 +12,16 @@ import {
 import { Comment } from './entities/comment.entity';
 
 @Resolver(() => Comment)
+@UseGuards(JwtAuthGuard)
 export class CommentsResolver {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Mutation(() => Comment)
   async createComment(
     @Args('createCommentInput') createCommentInput: CreateCommentInput,
+    @CurrentUser() user: User,
   ): Promise<Comment> {
-    return this.commentsService.create(createCommentInput);
+    return this.commentsService.create(createCommentInput, user);
   }
 
   @Mutation(() => Comment, {
@@ -29,23 +35,23 @@ export class CommentsResolver {
     return this.commentsService.modifyLikes(updateLikesInput);
   }
 
-  @Query(() => Comment, { name: 'comment' })
-  findOne(@Args('id', { type: () => String }) id: string) {
-    return this.commentsService.findOne(id);
-  }
-
   @Mutation(() => Comment)
   updateComment(
     @Args('updateCommentInput') updateCommentInput: UpdateCommentInput,
+    @CurrentUser() user: User,
   ) {
     return this.commentsService.update(
       updateCommentInput.id,
       updateCommentInput,
+      user,
     );
   }
 
   @Mutation(() => Comment)
-  removeComment(@Args('id', { type: () => String }) id: string) {
-    return this.commentsService.remove(id);
+  removeComment(
+    @Args('id', { type: () => String }) id: string,
+    @CurrentUser() user: User,
+  ) {
+    return this.commentsService.remove(id, user);
   }
 }

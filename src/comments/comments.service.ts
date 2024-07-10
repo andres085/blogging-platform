@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { User } from '../auth/entities/user.entity';
 import { Blog } from '../blogs/entities/blog.entity';
 import { UpdateLikesInput } from './dto/inputs';
 import { CreateCommentInput } from './dto/inputs/create-comment.input';
@@ -14,12 +15,18 @@ export class CommentsService {
     private readonly commentsRepository: Repository<Comment>,
   ) {}
 
-  async create(createCommentInput: CreateCommentInput): Promise<Comment> {
+  async create(
+    createCommentInput: CreateCommentInput,
+    user: User,
+  ): Promise<Comment> {
     const { blogId, ...commentData } = createCommentInput;
     const newComment = this.commentsRepository.create({
       ...commentData,
       blog: {
         id: blogId,
+      },
+      user: {
+        id: user.id,
       },
     });
 
@@ -37,7 +44,21 @@ export class CommentsService {
   async findOne(id: string): Promise<Comment> {
     const foundComment = await this.commentsRepository.findOneBy({ id });
     if (!foundComment)
-      throw new NotFoundException(`Comment with id: ${id} not fund`);
+      throw new NotFoundException(`Comment with id: ${id} not found.`);
+
+    return foundComment;
+  }
+
+  async findOneByUser(id: string, user: User): Promise<Comment> {
+    const foundComment = await this.commentsRepository.findOne({
+      where: {
+        id,
+        user: { id: user.id },
+      },
+    });
+
+    if (!foundComment)
+      throw new NotFoundException(`Comment with id ${id} not found.`);
 
     return foundComment;
   }
@@ -57,11 +78,24 @@ export class CommentsService {
     return await this.commentsRepository.save(commentToAddLike);
   }
 
-  update(id: string, updateCommentInput: UpdateCommentInput) {
-    return `This action updates a #${id} comment`;
+  async update(
+    id: string,
+    updateCommentInput: UpdateCommentInput,
+    user: User,
+  ): Promise<Comment> {
+    await this.findOneByUser(id, user);
+
+    const foundComment =
+      await this.commentsRepository.preload(updateCommentInput);
+
+    return this.commentsRepository.save(foundComment);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} comment`;
+  async remove(id: string, user: User): Promise<Comment> {
+    const commentToDelete = await this.findOneByUser(id, user);
+
+    await this.commentsRepository.delete({ id });
+
+    return commentToDelete;
   }
 }

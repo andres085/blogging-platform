@@ -32,7 +32,6 @@ enum BlogTags {
 type Query {
   getAllBlogs(tag: BlogTags): [Blog!]!
   getBlog(id: ID!): Blog!
-  comment(id: String!): Comment!
 }
 
 type Mutation {
@@ -75,7 +74,6 @@ input UpdateLikesInput {
 }
 
 input UpdateCommentInput {
-  blogId: ID
-  comment: String
   id: ID!
+  comment: String!
 }
