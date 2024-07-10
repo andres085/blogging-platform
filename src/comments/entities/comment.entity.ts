@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { IsInt, IsString, IsUUID, MaxLength } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Blog } from '../../blogs/entities/blog.entity';
 
 @Entity('comments')
 @ObjectType()
@@ -25,4 +26,7 @@ export class Comment {
   @Column()
   @IsInt()
   dislikes: number = 0;
+
+  @ManyToOne(() => Blog, (blog) => blog.comments, { lazy: true })
+  blog: Blog;
 }

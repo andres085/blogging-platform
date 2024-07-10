@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Comment {
+  id: ID!
+  comment: String!
+  likes: Float!
+  dislikes: Float!
+}
+
 type Blog {
   id: ID!
   title: String!
@@ -19,13 +26,6 @@ enum BlogTags {
   DEVOPS
   BOOKS
   TUTORIALS
-}
-
-type Comment {
-  id: ID!
-  comment: String!
-  likes: Float!
-  dislikes: Float!
 }
 
 type Query {
@@ -61,10 +61,12 @@ input UpdateBlogInput {
 }
 
 input CreateCommentInput {
+  blogId: ID!
   comment: String!
 }
 
 input UpdateCommentInput {
+  blogId: ID
   comment: String
   id: ID!
 }

@@ -13,8 +13,12 @@ export class CommentsService {
   ) {}
 
   async create(createCommentInput: CreateCommentInput): Promise<Comment> {
+    const { blogId, ...commentData } = createCommentInput;
     const newComment = this.commentsRepository.create({
-      ...createCommentInput,
+      ...commentData,
+      blog: {
+        id: blogId,
+      },
     });
 
     return await this.commentsRepository.save(newComment);
