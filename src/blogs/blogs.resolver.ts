@@ -4,8 +4,8 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../auth/entities/user.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { BlogsService } from './blogs.service';
-import { CreateBlogInput } from './dto/create-blog.input';
-import { UpdateBlogInput } from './dto/update-blog.input';
+import { SearchByTagArg } from './dto/args/search.args';
+import { CreateBlogInput, UpdateBlogInput } from './dto/inputs';
 import { Blog } from './entities/blog.entity';
 
 @Resolver(() => Blog)
@@ -22,8 +22,8 @@ export class BlogsResolver {
   }
 
   @Query(() => [Blog], { name: 'getAllBlogs' })
-  async findAll(): Promise<Blog[]> {
-    return this.blogsService.findAll();
+  async findAll(@Args() searchByTagArg: SearchByTagArg): Promise<Blog[]> {
+    return this.blogsService.findAll(searchByTagArg);
   }
 
   @Query(() => Blog, { name: 'getBlog' })

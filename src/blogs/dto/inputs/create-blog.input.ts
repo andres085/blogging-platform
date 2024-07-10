@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsArray, IsBoolean, IsString } from 'class-validator';
-import { BlogTags } from '../enums/tags.enums';
+import { BlogTags } from '../../enums/tags.enums';
 
 @InputType()
 export class CreateBlogInput {

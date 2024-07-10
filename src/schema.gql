@@ -22,7 +22,7 @@ enum BlogTags {
 }
 
 type Query {
-  getAllBlogs: [Blog!]!
+  getAllBlogs(tag: BlogTags): [Blog!]!
   getBlog(id: ID!): Blog!
 }
 
