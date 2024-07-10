@@ -40,6 +40,9 @@ type Mutation {
   updateBlog(updateBlogInput: UpdateBlogInput!): Blog!
   deactivateBlog(id: ID!): Blog!
   createComment(createCommentInput: CreateCommentInput!): Comment!
+
+  """This mutation is used to modify the like and dislikes for a comment"""
+  modifyLikes(updateCommentInput: UpdateLikesInput!): Comment!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: String!): Comment!
   executeSeed: Boolean!
@@ -63,6 +66,12 @@ input UpdateBlogInput {
 input CreateCommentInput {
   blogId: ID!
   comment: String!
+}
+
+input UpdateLikesInput {
+  id: ID!
+  addLike: Boolean
+  addDislike: Boolean
 }
 
 input UpdateCommentInput {
