@@ -14,10 +14,10 @@ export class CommentsResolver {
     return this.commentsService.create(createCommentInput);
   }
 
-  @Query(() => [Comment], { name: 'comments' })
-  findAll() {
-    return this.commentsService.findAll();
-  }
+  // @Query(() => [Comment], { name: 'comments' })
+  // findAll() {
+  //   return this.commentsService.findAll();
+  // }
 
   @Query(() => Comment, { name: 'comment' })
   findOne(@Args('id', { type: () => String }) id: string) {

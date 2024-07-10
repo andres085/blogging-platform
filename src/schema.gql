@@ -15,6 +15,7 @@ type Blog {
   body: String!
   isActive: Boolean!
   tags: [BlogTags!]!
+  comments: [Comment!]!
 }
 
 """These are the tags that a blog post can have."""
@@ -31,7 +32,6 @@ enum BlogTags {
 type Query {
   getAllBlogs(tag: BlogTags): [Blog!]!
   getBlog(id: ID!): Blog!
-  comments: [Comment!]!
   comment(id: String!): Comment!
 }
 
@@ -39,10 +39,10 @@ type Mutation {
   createBlog(createBlogInput: CreateBlogInput!): Blog!
   updateBlog(updateBlogInput: UpdateBlogInput!): Blog!
   deactivateBlog(id: ID!): Blog!
-  executeSeed: Boolean!
   createComment(createCommentInput: CreateCommentInput!): Comment!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: String!): Comment!
+  executeSeed: Boolean!
 }
 
 input CreateBlogInput {

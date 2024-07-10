@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Blog } from '../blogs/entities/blog.entity';
 import { CreateCommentInput } from './dto/inputs/create-comment.input';
 import { UpdateCommentInput } from './dto/inputs/update-comment.input';
 import { Comment } from './entities/comment.entity';
@@ -24,8 +25,12 @@ export class CommentsService {
     return await this.commentsRepository.save(newComment);
   }
 
-  findAll() {
-    return `This action returns all comments`;
+  async findAll(blog: Blog): Promise<Comment[]> {
+    const queryBuilder = this.commentsRepository
+      .createQueryBuilder()
+      .where(`"blogId"=:blogId`, { blogId: blog.id });
+
+    return queryBuilder.getMany();
   }
 
   findOne(id: string) {

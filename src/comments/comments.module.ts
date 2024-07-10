@@ -7,6 +7,6 @@ import { Comment } from './entities/comment.entity';
 @Module({
   providers: [CommentsResolver, CommentsService],
   imports: [TypeOrmModule.forFeature([Comment])],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, CommentsService],
 })
 export class CommentsModule {}
