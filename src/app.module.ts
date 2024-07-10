@@ -8,6 +8,7 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { SeedModule } from './seed/seed.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { SeedModule } from './seed/seed.module';
     AuthModule,
     BlogsModule,
     SeedModule,
+    CommentsModule,
   ],
   controllers: [],
   providers: [],

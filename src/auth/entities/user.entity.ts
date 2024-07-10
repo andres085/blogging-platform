@@ -38,6 +38,9 @@ export class User {
   @OneToMany(() => Blog, (blog) => blog.user, { lazy: true })
   blogs: Blog[];
 
+  @OneToMany(() => Blog, (comment) => comment.user, { lazy: true })
+  comments: Comment[];
+
   @BeforeInsert()
   sanitizeEmailBeforeInsert() {
     this.email = this.email.toLowerCase().trim();

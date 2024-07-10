@@ -1,6 +1,13 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from '../../auth/entities/user.entity';
+import { Comment } from '../../comments/entities/comment.entity';
 import { BlogTags } from '../enums/tags.enums';
 
 @Entity({ name: 'blogs' })
@@ -34,4 +41,7 @@ export class Blog {
 
   @ManyToOne(() => User, (user) => user.blogs, { lazy: true })
   user: User;
+
+  @OneToMany(() => Comment, (comment) => comment.blog, { lazy: true })
+  comments: Comment[];
 }

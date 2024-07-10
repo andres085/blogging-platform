@@ -2,12 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Comment {
+  id: ID!
+  comment: String!
+  likes: Float!
+  dislikes: Float!
+}
+
 type Blog {
   id: ID!
   title: String!
   body: String!
   isActive: Boolean!
   tags: [BlogTags!]!
+  comments: [Comment!]!
 }
 
 """These are the tags that a blog post can have."""
@@ -30,6 +38,12 @@ type Mutation {
   createBlog(createBlogInput: CreateBlogInput!): Blog!
   updateBlog(updateBlogInput: UpdateBlogInput!): Blog!
   deactivateBlog(id: ID!): Blog!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
+
+  """This mutation is used to modify the like and dislikes for a comment"""
+  modifyLikes(updateCommentInput: UpdateLikesInput!): Comment!
+  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  removeComment(id: String!): Comment!
   executeSeed: Boolean!
 }
 
@@ -46,4 +60,20 @@ input UpdateBlogInput {
   isActive: Boolean
   tags: [BlogTags!]
   id: ID!
+}
+
+input CreateCommentInput {
+  blogId: ID!
+  comment: String!
+}
+
+input UpdateLikesInput {
+  id: ID!
+  addLike: Boolean
+  addDislike: Boolean
+}
+
+input UpdateCommentInput {
+  id: ID!
+  comment: String!
 }
