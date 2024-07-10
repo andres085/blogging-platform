@@ -32,7 +32,7 @@ type Query {
   getAllBlogs(tag: BlogTags): [Blog!]!
   getBlog(id: ID!): Blog!
   comments: [Comment!]!
-  comment(id: Int!): Comment!
+  comment(id: String!): Comment!
 }
 
 type Mutation {
@@ -42,7 +42,7 @@ type Mutation {
   executeSeed: Boolean!
   createComment(createCommentInput: CreateCommentInput!): Comment!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
-  removeComment(id: Int!): Comment!
+  removeComment(id: String!): Comment!
 }
 
 input CreateBlogInput {
@@ -61,12 +61,10 @@ input UpdateBlogInput {
 }
 
 input CreateCommentInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  comment: String!
 }
 
 input UpdateCommentInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  comment: String
+  id: ID!
 }
