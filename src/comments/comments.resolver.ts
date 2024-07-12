@@ -48,7 +48,7 @@ export class CommentsResolver {
   }
 
   @Mutation(() => Comment, {
-    name: 'modifyLikes',
+    name: 'modifyCommentLikes',
     description:
       'This mutation is used to modify the like and dislikes for a comment',
   })

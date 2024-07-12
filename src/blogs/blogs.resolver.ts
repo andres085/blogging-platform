@@ -10,6 +10,7 @@ import {
 } from '@nestjs/graphql';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CommentsService } from '../comments/comments.service';
+import { UpdateLikesInput } from '../comments/dto/inputs';
 import { Comment } from '../comments/entities/comment.entity';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
@@ -65,5 +66,16 @@ export class BlogsResolver {
   @ResolveField(() => [Comment], { name: 'comments' })
   async getComments(@Parent() blog: Blog): Promise<Comment[]> {
     return this.commentsService.findAll(blog);
+  }
+
+  @Mutation(() => Blog, {
+    name: 'modifyBlogLikes',
+    description:
+      'This mutation is used to modify the like and dislikes for a comment',
+  })
+  async modifyLikes(
+    @Args('updateBlogLikesInput') updateLikesInput: UpdateLikesInput,
+  ): Promise<Blog> {
+    return this.blogsService.modifyLikes(updateLikesInput);
   }
 }

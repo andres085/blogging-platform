@@ -15,6 +15,8 @@ type Blog {
   body: String!
   isActive: Boolean!
   tags: [BlogTags!]!
+  likes: Float!
+  dislikes: Float!
   comments: [Comment!]!
 }
 
@@ -53,10 +55,13 @@ type Mutation {
   createBlog(createBlogInput: CreateBlogInput!): Blog!
   updateBlog(updateBlogInput: UpdateBlogInput!): Blog!
   deactivateBlog(id: ID!): Blog!
+
+  """This mutation is used to modify the like and dislikes for a comment"""
+  modifyBlogLikes(updateBlogLikesInput: UpdateLikesInput!): Blog!
   createComment(createCommentInput: CreateCommentInput!): Comment!
 
   """This mutation is used to modify the like and dislikes for a comment"""
-  modifyLikes(updateCommentInput: UpdateLikesInput!): Comment!
+  modifyCommentLikes(updateCommentInput: UpdateLikesInput!): Comment!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: String!): Comment!
   executeSeed: Boolean!
@@ -84,15 +89,15 @@ input UpdateBlogInput {
   id: ID!
 }
 
-input CreateCommentInput {
-  blogId: ID!
-  comment: String!
-}
-
 input UpdateLikesInput {
   id: ID!
   addLike: Boolean
   addDislike: Boolean
+}
+
+input CreateCommentInput {
+  blogId: ID!
+  comment: String!
 }
 
 input UpdateCommentInput {

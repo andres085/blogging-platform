@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { IsInt } from 'class-validator';
 import {
   Column,
   Entity,
@@ -38,6 +39,20 @@ export class Blog {
     array: true,
   })
   tags: BlogTags[];
+
+  @Field(() => Number)
+  @Column('int', {
+    default: 0,
+  })
+  @IsInt()
+  likes: number = 0;
+
+  @Field(() => Number)
+  @Column('int', {
+    default: 0,
+  })
+  @IsInt()
+  dislikes: number = 0;
 
   @ManyToOne(() => User, (user) => user.blogs, { lazy: true })
   user: User;
