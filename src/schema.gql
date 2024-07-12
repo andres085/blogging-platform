@@ -41,6 +41,8 @@ type User {
 }
 
 type Query {
+  users: [User!]!
+  user(id: ID!): User!
   getAllBlogs(tag: BlogTags): [Blog!]!
   getBlog(id: ID!): Blog!
 }

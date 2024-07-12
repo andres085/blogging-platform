@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { UpdateUserInput } from './dto/inputs/update-user.input';
@@ -11,15 +11,15 @@ import { UsersService } from './users.service';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  // @Query(() => [User], { name: 'users' })
-  // findAll() {
-  //   return this.usersService.findAll();
-  // }
+  @Query(() => [User], { name: 'users' })
+  async findAll(): Promise<User[]> {
+    return this.usersService.findAll();
+  }
 
-  // @Query(() => User, { name: 'user' })
-  // findOne(@Args('id', { type: () => ID }) id: string) {
-  //   return this.usersService.findOne(id);
-  // }
+  @Query(() => User, { name: 'user' })
+  async findOne(@Args('id', { type: () => ID }) id: string): Promise<User> {
+    return this.usersService.findOne(id);
+  }
 
   @Mutation(() => User, { name: 'updateUserProfile' })
   async updateUser(
