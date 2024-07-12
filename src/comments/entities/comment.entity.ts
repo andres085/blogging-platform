@@ -28,7 +28,7 @@ export class Comment {
   @IsInt()
   dislikes: number = 0;
 
-  @ManyToOne(() => Blog, (blog) => blog.comments, { eager: true })
+  @ManyToOne(() => Blog, (blog) => blog.comments, { lazy: true })
   blog: Blog;
 
   @ManyToOne(() => User, (user) => user.comments, { lazy: true })
