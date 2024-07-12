@@ -8,10 +8,10 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CommentsService } from '../comments/comments.service';
 import { Comment } from '../comments/entities/comment.entity';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { BlogsService } from './blogs.service';
 import { SearchByTagArg } from './dto/args/search.args';

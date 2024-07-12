@@ -1,5 +1,5 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UpdateUserInput } from './dto/update-user.input';
+import { UpdateUserInput } from './dto/inputs/update-user.input';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
