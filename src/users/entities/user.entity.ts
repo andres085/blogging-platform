@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -12,9 +12,11 @@ import { Blog } from '../../blogs/entities/blog.entity';
 @Entity('users')
 @ObjectType()
 export class User {
+  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Field(() => String)
   @Column('text', {
     unique: true,
   })
@@ -23,14 +25,17 @@ export class User {
   @Column('text', { select: false })
   password: string;
 
+  @Field(() => String)
   @Column('text')
   fullName: string;
 
+  @Field(() => Boolean)
   @Column('bool', {
     default: true,
   })
   isActive: boolean;
 
+  @Field(() => [String])
   @Column('text', {
     array: true,
     default: ['reader'],
