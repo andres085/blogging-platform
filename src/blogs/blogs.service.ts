@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UpdateLikesInput } from '../comments/dto/inputs';
 import { User } from '../users/entities/user.entity';
 import { SearchByTagArg } from './dto/args/search.args';
 import { CreateBlogInput, UpdateBlogInput } from './dto/inputs';
@@ -79,6 +80,21 @@ export class BlogsService {
 
   async remove(id: string, user: User): Promise<Blog> {
     return this.update(id, { id, isActive: false }, user);
+  }
+
+  async modifyLikes(updateLikesInput: UpdateLikesInput): Promise<Blog> {
+    const { id: blogId, addLike, addDislike } = updateLikesInput;
+    const blogToAddLike = await this.findOne(blogId);
+
+    if (addLike) {
+      blogToAddLike.likes++;
+    }
+
+    if (addDislike) {
+      blogToAddLike.dislikes++;
+    }
+
+    return await this.blogsRepository.save(blogToAddLike);
   }
 
   private handleDBErrors(error: any): never {
