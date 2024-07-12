@@ -3,9 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
-import { User } from '../auth/entities/user.entity';
 import { BlogsService } from '../blogs/blogs.service';
 import { Blog } from '../blogs/entities/blog.entity';
+import { User } from '../users/entities/user.entity';
 import { BLOGS_DATA, USERS_DATA } from './data/seed-data';
 
 @Injectable()

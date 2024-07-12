@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../auth/entities/user.entity';
 import { Blog } from '../blogs/entities/blog.entity';
+import { User } from '../users/entities/user.entity';
 import { UpdateLikesInput } from './dto/inputs';
 import { CreateCommentInput } from './dto/inputs/create-comment.input';
 import { UpdateCommentInput } from './dto/inputs/update-comment.input';

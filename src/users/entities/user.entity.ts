@@ -1,3 +1,4 @@
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -9,10 +10,13 @@ import {
 import { Blog } from '../../blogs/entities/blog.entity';
 
 @Entity('users')
+@ObjectType()
 export class User {
+  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Field(() => String)
   @Column('text', {
     unique: true,
   })
@@ -21,14 +25,17 @@ export class User {
   @Column('text', { select: false })
   password: string;
 
+  @Field(() => String)
   @Column('text')
   fullName: string;
 
+  @Field(() => Boolean)
   @Column('bool', {
     default: true,
   })
   isActive: boolean;
 
+  @Field(() => [String])
   @Column('text', {
     array: true,
     default: ['reader'],
@@ -40,6 +47,21 @@ export class User {
 
   @OneToMany(() => Blog, (comment) => comment.user, { lazy: true })
   comments: Comment[];
+
+  @Field(() => String, { nullable: true })
+  @Column('text', { default: null })
+  bio: string;
+
+  @Field(() => String, { nullable: true })
+  @Column('text', { default: null })
+  avatar: string;
+
+  @Field(() => [String], { nullable: true })
+  @Column('text', {
+    array: true,
+    default: [],
+  })
+  socialLinks: string[];
 
   @BeforeInsert()
   sanitizeEmailBeforeInsert() {

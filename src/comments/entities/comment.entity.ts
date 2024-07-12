@@ -1,8 +1,8 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { IsInt, IsString, IsUUID, MaxLength } from 'class-validator';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../../auth/entities/user.entity';
 import { Blog } from '../../blogs/entities/blog.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('comments')
 @ObjectType()

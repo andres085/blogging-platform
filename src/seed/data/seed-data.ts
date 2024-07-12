@@ -3,19 +3,19 @@ import { BlogTags } from '../../blogs/enums/tags.enums';
 export const USERS_DATA = [
   {
     email: 'alice@example.com',
-    password: 'password123',
+    password: 'Password123',
     fullName: 'Alice Johnson',
     roles: ['author', 'reader'],
   },
   {
     email: 'bob@example.com',
-    password: 'securepassword',
+    password: 'Securepassword123',
     fullName: 'Bob Smith',
     roles: ['reader'],
   },
   {
     email: 'charlie@example.com',
-    password: 'adminpass',
+    password: 'Adminpass123',
     fullName: 'Charlie Brown',
     roles: ['admin', 'author', 'reader'],
   },

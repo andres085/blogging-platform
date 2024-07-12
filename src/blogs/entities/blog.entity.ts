@@ -6,8 +6,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from '../../auth/entities/user.entity';
 import { Comment } from '../../comments/entities/comment.entity';
+import { User } from '../../users/entities/user.entity';
 import { BlogTags } from '../enums/tags.enums';
 
 @Entity({ name: 'blogs' })
