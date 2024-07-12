@@ -1,8 +1,10 @@
-import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Inject, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Resolver, Subscription } from '@nestjs/graphql';
+import { PubSub } from 'graphql-subscriptions';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../auth/entities/user.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Blog } from '../blogs/entities/blog.entity';
 import { CommentsService } from './comments.service';
 import {
   CreateCommentInput,
@@ -12,16 +14,37 @@ import {
 import { Comment } from './entities/comment.entity';
 
 @Resolver(() => Comment)
-@UseGuards(JwtAuthGuard)
 export class CommentsResolver {
-  constructor(private readonly commentsService: CommentsService) {}
+  constructor(
+    private readonly commentsService: CommentsService,
+    @Inject('PUB_SUB') private readonly pubSub: PubSub,
+  ) {}
 
   @Mutation(() => Comment)
+  @UseGuards(JwtAuthGuard)
   async createComment(
     @Args('createCommentInput') createCommentInput: CreateCommentInput,
     @CurrentUser() user: User,
   ): Promise<Comment> {
-    return this.commentsService.create(createCommentInput, user);
+    const newComment = await this.commentsService.create(
+      createCommentInput,
+      user,
+    );
+
+    const blog = await (newComment.blog as unknown as Promise<Blog>);
+    const commentWithBlogId = { ...newComment, blogId: blog.id };
+
+    this.pubSub.publish('commentAdded', { commentAdded: commentWithBlogId });
+
+    return newComment;
+  }
+
+  @Subscription(() => Comment, {
+    filter: (payload, variables) =>
+      payload.commentAdded.blogId === variables.blogId,
+  })
+  commentAdded(@Args('blogId') blogId: string) {
+    return this.pubSub.asyncIterator('commentAdded');
   }
 
   @Mutation(() => Comment, {
@@ -36,6 +59,7 @@ export class CommentsResolver {
   }
 
   @Mutation(() => Comment)
+  @UseGuards(JwtAuthGuard)
   updateComment(
     @Args('updateCommentInput') updateCommentInput: UpdateCommentInput,
     @CurrentUser() user: User,
@@ -48,6 +72,7 @@ export class CommentsResolver {
   }
 
   @Mutation(() => Comment)
+  @UseGuards(JwtAuthGuard)
   removeComment(
     @Args('id', { type: () => String }) id: string,
     @CurrentUser() user: User,
