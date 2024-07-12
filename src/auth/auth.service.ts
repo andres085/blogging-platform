@@ -70,7 +70,6 @@ export class AuthService {
   private handleDBErrors(error: any): never {
     if (error.code === '23505') throw new BadRequestException(error.detail);
 
-    console.error(error);
     throw new InternalServerErrorException('Error, please check server logs');
   }
 }
