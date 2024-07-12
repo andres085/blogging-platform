@@ -29,12 +29,22 @@ enum BlogTags {
   TUTORIALS
 }
 
+type User {
+  bio: String
+  avatar: String
+  socialLinks: [String!]
+}
+
 type Query {
+  users: [User!]!
+  user(id: ID!): User!
   getAllBlogs(tag: BlogTags): [Blog!]!
   getBlog(id: ID!): Blog!
 }
 
 type Mutation {
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: ID!): User!
   createBlog(createBlogInput: CreateBlogInput!): Blog!
   updateBlog(updateBlogInput: UpdateBlogInput!): Blog!
   deactivateBlog(id: ID!): Blog!
@@ -45,6 +55,10 @@ type Mutation {
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: String!): Comment!
   executeSeed: Boolean!
+}
+
+input UpdateUserInput {
+  id: ID!
 }
 
 input CreateBlogInput {

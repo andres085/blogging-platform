@@ -2,9 +2,9 @@ import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { User } from '../auth/entities/user.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Blog } from '../blogs/entities/blog.entity';
+import { User } from '../users/entities/user.entity';
 import { CommentsService } from './comments.service';
 import {
   CreateCommentInput,

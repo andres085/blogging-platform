@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../auth/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { SearchByTagArg } from './dto/args/search.args';
 import { CreateBlogInput, UpdateBlogInput } from './dto/inputs';
 import { Blog } from './entities/blog.entity';

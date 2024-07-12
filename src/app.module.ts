@@ -13,6 +13,7 @@ import { CommentsModule } from './comments/comments.module';
 import { CommonModule } from './common/common.module';
 import { MyContext } from './common/types/context.type';
 import { SeedModule } from './seed/seed.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -77,6 +78,7 @@ import { SeedModule } from './seed/seed.module';
     SeedModule,
     CommentsModule,
     CommonModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [
