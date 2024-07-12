@@ -47,7 +47,7 @@ type Query {
 
 type Mutation {
   updateUserProfile(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: ID!): User!
+  blockAccount: User!
   createBlog(createBlogInput: CreateBlogInput!): Blog!
   updateBlog(updateBlogInput: UpdateBlogInput!): Blog!
   deactivateBlog(id: ID!): Blog!
@@ -64,6 +64,7 @@ input UpdateUserInput {
   bio: String
   avatar: String
   socialLinks: [String!]
+  isActive: Boolean!
 }
 
 input CreateBlogInput {

@@ -37,7 +37,7 @@ export class UsersService {
     return this.userRepository.save(foundUser);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+  async remove(id: string): Promise<User> {
+    return await this.update(id, { isActive: false });
   }
 }

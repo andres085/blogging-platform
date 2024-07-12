@@ -14,4 +14,7 @@ export class UpdateUserInput {
   @Field(() => [String], { nullable: true })
   @IsArray()
   socialLinks?: string[];
+
+  @Field(() => Boolean)
+  isActive: boolean;
 }

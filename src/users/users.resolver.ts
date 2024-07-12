@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, ID, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { UpdateUserInput } from './dto/inputs/update-user.input';
@@ -29,8 +29,8 @@ export class UsersResolver {
     return this.usersService.update(user.id, updateUserInput);
   }
 
-  @Mutation(() => User)
-  removeUser(@Args('id', { type: () => ID }) id: string) {
-    return this.usersService.remove(id);
+  @Mutation(() => User, { name: 'blockAccount' })
+  async removeUser(@CurrentUser() user: User): Promise<User> {
+    return this.usersService.remove(user.id);
   }
 }
