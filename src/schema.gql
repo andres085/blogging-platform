@@ -47,7 +47,7 @@ type Query {
   user(id: ID!): User!
   getAllBlogs(tag: BlogTags): [Blog!]!
   getBlog(id: ID!): Blog!
-  getAllUsers: [User!]!
+  getAllUsers(tag: BlogTags): [User!]!
 }
 
 type Mutation {
