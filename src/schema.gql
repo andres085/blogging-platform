@@ -67,6 +67,7 @@ type Mutation {
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: String!): Comment!
   executeSeed: Boolean!
+  deleteUser(id: String!): User!
 }
 
 input UpdateUserInput {
