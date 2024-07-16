@@ -40,14 +40,15 @@ type User {
   bio: String
   avatar: String
   socialLinks: [String!]
+  getUserBlogs(tag: BlogTags): [Blog!]!
+  blogsCountByUser: Int!
 }
 
 type Query {
-  users: [User!]!
   user(id: ID!): User!
   getAllBlogs(tag: BlogTags): [Blog!]!
   getBlog(id: ID!): Blog!
-  getAllUsers(tag: BlogTags): [User!]!
+  findAllUsers: [User!]!
 }
 
 type Mutation {
