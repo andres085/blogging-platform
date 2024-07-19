@@ -10,7 +10,7 @@ export class AdminPanelService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
 
-  async modifyUserRole(promoteUserInput: PromoteUserInput): Promise<User> {
+  async modifyUserRoles(promoteUserInput: PromoteUserInput): Promise<User> {
     const { id, roles } = promoteUserInput;
     const userToModifyRole = await this.usersRepository.findOneBy({ id });
 
@@ -19,7 +19,7 @@ export class AdminPanelService {
 
     const userToUpdate = await this.usersRepository.preload({
       id,
-      roles: [...userToModifyRole.roles, ...roles],
+      roles,
     });
 
     return this.usersRepository.save(userToUpdate);

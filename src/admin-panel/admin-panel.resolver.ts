@@ -27,11 +27,11 @@ export class AdminPanelResolver {
   }
 
   @Mutation(() => User, { name: 'modifyUserRole' })
-  async updateUser(
+  async updateUserRoles(
     @CurrentUser([ValidRoles.admin]) _: User,
     @Args('promoteUserInput') promoteUserInput: PromoteUserInput,
   ): Promise<User> {
-    return this.adminPanelService.modifyUserRole(promoteUserInput);
+    return this.adminPanelService.modifyUserRoles(promoteUserInput);
   }
 
   @Mutation(() => User, { name: 'deleteUser' })
