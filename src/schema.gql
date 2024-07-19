@@ -67,6 +67,7 @@ type Mutation {
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: String!): Comment!
   executeSeed: Boolean!
+  modifyUserRole(promoteUserInput: PromoteUserInput!): User!
   deleteUser(id: String!): User!
 }
 
@@ -106,6 +107,18 @@ input CreateCommentInput {
 input UpdateCommentInput {
   id: ID!
   comment: String!
+}
+
+input PromoteUserInput {
+  id: String!
+  roles: [ValidRoles!]!
+}
+
+"""These are the valid roles for a user"""
+enum ValidRoles {
+  admin
+  author
+  reader
 }
 
 type Subscription {

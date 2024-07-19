@@ -8,6 +8,7 @@ import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { AdminPanelService } from './admin-panel.service';
 import { DeleteUserArg } from './dto/args/delete-user.args';
+import { PromoteUserInput } from './dto/inputs/promote-user.input';
 
 @Resolver()
 @UseGuards(JwtAuthGuard)
@@ -23,6 +24,14 @@ export class AdminPanelResolver {
     @CurrentUser([ValidRoles.admin]) user: User,
   ): Promise<User[]> {
     return this.usersService.findAll();
+  }
+
+  @Mutation(() => User, { name: 'modifyUserRole' })
+  async updateUser(
+    @CurrentUser([ValidRoles.admin]) _: User,
+    @Args('promoteUserInput') promoteUserInput: PromoteUserInput,
+  ): Promise<User> {
+    return this.adminPanelService.modifyUserRole(promoteUserInput);
   }
 
   @Mutation(() => User, { name: 'deleteUser' })
