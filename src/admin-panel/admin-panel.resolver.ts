@@ -10,6 +10,7 @@ import { UsersService } from '../users/users.service';
 import { AdminPanelService } from './admin-panel.service';
 import { AdminBlogSearchArg } from './dto/args/admin-blog-search.args';
 import { DeleteUserArg } from './dto/args/delete-user.args';
+import { SearchBlogByIDArg } from './dto/args/search-blog-arg';
 import { PromoteUserInput } from './dto/inputs/promote-user.input';
 
 @Resolver()
@@ -28,6 +29,14 @@ export class AdminPanelResolver {
     return this.usersService.findAll();
   }
 
+  @Query(() => [Blog], { name: 'adminFindAllBlogs' })
+  async findAllBlogs(
+    @CurrentUser([ValidRoles.admin]) _: User,
+    @Args() searchArgs: AdminBlogSearchArg,
+  ): Promise<Blog[]> {
+    return this.adminPanelService.findAllBlogs(searchArgs);
+  }
+
   @Mutation(() => User, { name: 'modifyUserRole' })
   async updateUserRoles(
     @CurrentUser([ValidRoles.admin]) _: User,
@@ -36,19 +45,19 @@ export class AdminPanelResolver {
     return this.adminPanelService.modifyUserRoles(promoteUserInput);
   }
 
+  @Mutation(() => Blog, { name: 'deactivateBlog' })
+  async deactivateBlog(
+    @CurrentUser([ValidRoles.admin]) _: User,
+    @Args() seachBlogByIDArg: SearchBlogByIDArg,
+  ): Promise<Blog> {
+    return this.adminPanelService.deactivateBlog(seachBlogByIDArg.blogId);
+  }
+
   @Mutation(() => User, { name: 'deleteUser' })
   async deleteUser(
     @Args() deleteUserArg: DeleteUserArg,
     @CurrentUser([ValidRoles.admin]) user: User,
   ): Promise<User> {
     return this.usersService.deleteUser(deleteUserArg.id);
-  }
-
-  @Query(() => [Blog], { name: 'adminFindAllBlogs' })
-  async findAllBlogs(
-    @CurrentUser([ValidRoles.admin]) _: User,
-    @Args() searchArgs: AdminBlogSearchArg,
-  ): Promise<Blog[]> {
-    return this.adminPanelService.findAllBlogs(searchArgs);
   }
 }

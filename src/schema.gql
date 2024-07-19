@@ -57,7 +57,7 @@ type Mutation {
   blockAccount: User!
   createBlog(createBlogInput: CreateBlogInput!): Blog!
   updateBlog(updateBlogInput: UpdateBlogInput!): Blog!
-  deactivateBlog(id: ID!): Blog!
+  deactivateBlog(blogId: ID!): Blog!
 
   """This mutation is used to modify the like and dislikes for a comment"""
   modifyBlogLikes(updateBlogLikesInput: UpdateLikesInput!): Blog!

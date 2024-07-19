@@ -29,6 +29,23 @@ export class AdminPanelService {
     return await queryBuilder.getMany();
   }
 
+  async deactivateBlog(id: string): Promise<Blog> {
+    const blogToDeactivate = await this.blogsRepository.findOneBy({ id });
+
+    if (!blogToDeactivate)
+      throw new NotFoundException(`Blog with id ${id} not found.`);
+
+    if (!blogToDeactivate.isActive)
+      throw new NotFoundException(`Blog with id ${id} is already inactive.`);
+
+    const foundBlog = await this.blogsRepository.preload({
+      id,
+      isActive: false,
+    });
+
+    return this.blogsRepository.save(foundBlog);
+  }
+
   async modifyUserRoles(promoteUserInput: PromoteUserInput): Promise<User> {
     const { id, roles } = promoteUserInput;
     const userToModifyRole = await this.usersRepository.findOneBy({ id });
