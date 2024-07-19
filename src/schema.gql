@@ -49,6 +49,7 @@ type Query {
   getAllBlogs(tag: BlogTags): [Blog!]!
   getBlog(id: ID!): Blog!
   findAllUsers: [User!]!
+  adminFindAllBlogs(tag: String, isActive: Boolean): [Blog!]!
 }
 
 type Mutation {
