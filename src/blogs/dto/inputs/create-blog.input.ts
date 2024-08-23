@@ -12,7 +12,7 @@ export class CreateBlogInput {
   @IsString()
   body: string;
 
-  @Field(() => Boolean)
+  @Field(() => Boolean, { nullable: true })
   @IsBoolean()
   isActive: boolean;
 

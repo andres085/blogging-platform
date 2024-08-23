@@ -17,6 +17,7 @@ type Blog {
   tags: [BlogTags!]!
   likes: Float!
   dislikes: Float!
+  publishedAt: String!
   comments: [Comment!]!
 }
 
@@ -83,7 +84,7 @@ input UpdateUserInput {
 input CreateBlogInput {
   title: String!
   body: String!
-  isActive: Boolean!
+  isActive: Boolean
   tags: [BlogTags!]!
 }
 
