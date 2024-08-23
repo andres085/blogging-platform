@@ -1,7 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { BlogsService } from '../blogs/blogs.service';
 import { Blog } from '../blogs/entities/blog.entity';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { ValidRoles } from '../common/enums/valid-roles.enum';
@@ -11,6 +10,7 @@ import { AdminPanelService } from './admin-panel.service';
 import { AdminBlogSearchArg } from './dto/args/admin-blog-search.args';
 import { DeleteUserArg } from './dto/args/delete-user.args';
 import { SearchBlogByIDArg } from './dto/args/search-blog-arg';
+import { FeatureBlogInput } from './dto/inputs/feature-blog.input';
 import { PromoteUserInput } from './dto/inputs/promote-user.input';
 
 @Resolver()
@@ -19,7 +19,6 @@ export class AdminPanelResolver {
   constructor(
     private readonly adminPanelService: AdminPanelService,
     private readonly usersService: UsersService,
-    private readonly blogsService: BlogsService,
   ) {}
 
   @Query(() => [User], { name: 'findAllUsers' })
@@ -75,5 +74,13 @@ export class AdminPanelResolver {
     @CurrentUser([ValidRoles.admin]) _: User,
   ): Promise<User> {
     return this.usersService.remove(deleteUserArg.id);
+  }
+
+  @Mutation(() => Blog, { name: 'changeFeatureBlog' })
+  async changeFeatureBlog(
+    @Args('featureBlog') featureBlog: FeatureBlogInput,
+    @CurrentUser([ValidRoles.admin]) _: User,
+  ): Promise<Blog> {
+    return this.adminPanelService.changeFeatureBlog(featureBlog);
   }
 }

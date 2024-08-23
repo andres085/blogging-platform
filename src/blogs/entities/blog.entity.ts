@@ -34,6 +34,12 @@ export class Blog {
   })
   isActive: boolean;
 
+  @Field(() => Boolean)
+  @Column('bool', {
+    default: false,
+  })
+  isFeatured: boolean;
+
   @Field(() => [BlogTags])
   @Column('text', {
     array: true,
