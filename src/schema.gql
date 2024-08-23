@@ -14,6 +14,7 @@ type Blog {
   title: String!
   body: String!
   isActive: Boolean!
+  isFeatured: Boolean!
   tags: [BlogTags!]!
   likes: Float!
   dislikes: Float!
@@ -73,6 +74,7 @@ type Mutation {
   deleteBlog(blogId: ID!): Blog!
   deleteUser(id: String!): User!
   deactivateUser(id: String!): User!
+  changeFeatureBlog(featureBlog: FeatureBlogInput!): Blog!
 }
 
 input UpdateUserInput {
@@ -123,6 +125,11 @@ enum ValidRoles {
   admin
   author
   reader
+}
+
+input FeatureBlogInput {
+  id: String!
+  isFeatured: Boolean!
 }
 
 type Subscription {

@@ -11,6 +11,7 @@ import { AdminPanelService } from './admin-panel.service';
 import { AdminBlogSearchArg } from './dto/args/admin-blog-search.args';
 import { DeleteUserArg } from './dto/args/delete-user.args';
 import { SearchBlogByIDArg } from './dto/args/search-blog-arg';
+import { FeatureBlogInput } from './dto/inputs/feature-blog.input';
 import { PromoteUserInput } from './dto/inputs/promote-user.input';
 
 @Resolver()
@@ -75,5 +76,13 @@ export class AdminPanelResolver {
     @CurrentUser([ValidRoles.admin]) _: User,
   ): Promise<User> {
     return this.usersService.remove(deleteUserArg.id);
+  }
+
+  @Mutation(() => Blog, { name: 'changeFeatureBlog' })
+  async changeFeatureBlog(
+    @Args('featureBlog') featureBlog: FeatureBlogInput,
+    @CurrentUser([ValidRoles.admin]) _: User,
+  ): Promise<Blog> {
+    return this.adminPanelService.changeFeatureBlog(featureBlog);
   }
 }
