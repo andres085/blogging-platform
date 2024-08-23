@@ -7,14 +7,15 @@ import { JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PubSub } from 'graphql-subscriptions';
 import { join } from 'path';
+import { AdminPanelModule } from './admin-panel/admin-panel.module';
 import { AuthModule } from './auth/auth.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { CommentsModule } from './comments/comments.module';
 import { CommonModule } from './common/common.module';
 import { MyContext } from './common/types/context.type';
+import { FlagsModule } from './flags/flags.module';
 import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
-import { AdminPanelModule } from './admin-panel/admin-panel.module';
 
 @Module({
   imports: [
@@ -81,6 +82,7 @@ import { AdminPanelModule } from './admin-panel/admin-panel.module';
     CommonModule,
     UsersModule,
     AdminPanelModule,
+    FlagsModule,
   ],
   controllers: [],
   providers: [
