@@ -54,6 +54,12 @@ export class Blog {
   @IsInt()
   dislikes: number = 0;
 
+  @Field(() => String)
+  @Column('text', {
+    default: null,
+  })
+  publishedAt: string;
+
   @ManyToOne(() => User, (user) => user.blogs, { lazy: true })
   user: User;
 

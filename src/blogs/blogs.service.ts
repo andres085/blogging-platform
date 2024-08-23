@@ -93,7 +93,15 @@ export class BlogsService {
   ): Promise<Blog> {
     await this.findOneByUser(id, user);
 
-    const foundBlog = await this.blogsRepository.preload(updateBlogInput);
+    let publishedAt: string | null = null;
+    if (updateBlogInput.isActive === true) {
+      publishedAt = new Date().toString();
+    }
+
+    const foundBlog = await this.blogsRepository.preload({
+      ...updateBlogInput,
+      publishedAt,
+    });
 
     if (!foundBlog)
       throw new NotFoundException(`Blog with id ${id} not found.`);
@@ -132,8 +140,8 @@ export class BlogsService {
 
   private handleDBErrors(error: any): never {
     if (error.code === '23505') throw new BadRequestException(error.detail);
+    if (error.code !== '500') throw error;
 
-    console.error(error);
     throw new InternalServerErrorException('Error, please check server logs');
   }
 }
