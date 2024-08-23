@@ -40,6 +40,29 @@ export class BlogsService {
     return await this.blogsRepository.find();
   }
 
+  async findAllByUserAndTag(
+    userId: string,
+    searchByTagArg: SearchByTagArg,
+  ): Promise<Blog[]> {
+    const { tag } = searchByTagArg;
+
+    if (tag) {
+      return await this.blogsRepository
+        .createQueryBuilder('blogs')
+        .where(':user = userId && :tag = ANY (blogs.tags)', {
+          tag,
+          user: userId,
+        })
+        .getMany();
+    }
+
+    return await this.blogsRepository.find({
+      where: {
+        user: { id: userId },
+      },
+    });
+  }
+
   async findOne(id: string): Promise<Blog> {
     const foundBlog = await this.blogsRepository.findOneBy({ id });
 
@@ -95,6 +118,16 @@ export class BlogsService {
     }
 
     return await this.blogsRepository.save(blogToAddLike);
+  }
+
+  async blogCountByUserId(userId: string): Promise<number> {
+    return await this.blogsRepository.count({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+    });
   }
 
   private handleDBErrors(error: any): never {

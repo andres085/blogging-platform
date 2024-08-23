@@ -14,6 +14,7 @@ import { CommonModule } from './common/common.module';
 import { MyContext } from './common/types/context.type';
 import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
+import { AdminPanelModule } from './admin-panel/admin-panel.module';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { UsersModule } from './users/users.module';
     CommentsModule,
     CommonModule,
     UsersModule,
+    AdminPanelModule,
   ],
   controllers: [],
   providers: [

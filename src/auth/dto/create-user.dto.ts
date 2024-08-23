@@ -1,11 +1,13 @@
 import {
   IsArray,
   IsEmail,
+  IsNotEmpty,
   IsString,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { AreValidRoles } from '../decorators/register-valid-roles.decorator';
 
 export class CreateUserDto {
   @IsEmail()
@@ -24,5 +26,7 @@ export class CreateUserDto {
   fullName: string;
 
   @IsArray()
+  @IsNotEmpty()
+  @AreValidRoles()
   roles: string[];
 }

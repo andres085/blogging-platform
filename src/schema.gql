@@ -40,13 +40,16 @@ type User {
   bio: String
   avatar: String
   socialLinks: [String!]
+  getUserBlogs(tag: BlogTags): [Blog!]!
+  blogsCountByUser: Int!
 }
 
 type Query {
-  users: [User!]!
   user(id: ID!): User!
   getAllBlogs(tag: BlogTags): [Blog!]!
   getBlog(id: ID!): Blog!
+  findAllUsers: [User!]!
+  adminFindAllBlogs(tag: String, isActive: Boolean): [Blog!]!
 }
 
 type Mutation {
@@ -54,7 +57,7 @@ type Mutation {
   blockAccount: User!
   createBlog(createBlogInput: CreateBlogInput!): Blog!
   updateBlog(updateBlogInput: UpdateBlogInput!): Blog!
-  deactivateBlog(id: ID!): Blog!
+  deactivateBlog(blogId: ID!): Blog!
 
   """This mutation is used to modify the like and dislikes for a comment"""
   modifyBlogLikes(updateBlogLikesInput: UpdateLikesInput!): Blog!
@@ -65,6 +68,9 @@ type Mutation {
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: String!): Comment!
   executeSeed: Boolean!
+  modifyUserRole(promoteUserInput: PromoteUserInput!): User!
+  deleteUser(id: String!): User!
+  deactivateUser(id: String!): User!
 }
 
 input UpdateUserInput {
@@ -103,6 +109,18 @@ input CreateCommentInput {
 input UpdateCommentInput {
   id: ID!
   comment: String!
+}
+
+input PromoteUserInput {
+  id: String!
+  roles: [ValidRoles!]!
+}
+
+"""These are the valid roles for a user"""
+enum ValidRoles {
+  admin
+  author
+  reader
 }
 
 type Subscription {
