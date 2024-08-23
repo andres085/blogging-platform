@@ -1,7 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { BlogsService } from '../blogs/blogs.service';
 import { Blog } from '../blogs/entities/blog.entity';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { ValidRoles } from '../common/enums/valid-roles.enum';
@@ -20,7 +19,6 @@ export class AdminPanelResolver {
   constructor(
     private readonly adminPanelService: AdminPanelService,
     private readonly usersService: UsersService,
-    private readonly blogsService: BlogsService,
   ) {}
 
   @Query(() => [User], { name: 'findAllUsers' })
