@@ -70,6 +70,7 @@ type Mutation {
   removeComment(id: String!): Comment!
   executeSeed: Boolean!
   modifyUserRole(promoteUserInput: PromoteUserInput!): User!
+  deleteBlog(blogId: ID!): Blog!
   deleteUser(id: String!): User!
   deactivateUser(id: String!): User!
 }

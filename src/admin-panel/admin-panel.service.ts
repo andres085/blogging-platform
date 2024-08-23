@@ -61,4 +61,15 @@ export class AdminPanelService {
 
     return this.usersRepository.save(userToUpdate);
   }
+
+  async deleteBlog(id: string): Promise<Blog> {
+    const blogToDeactivate = await this.blogsRepository.findOneBy({ id });
+
+    if (!blogToDeactivate)
+      throw new NotFoundException(`Blog with id ${id} not found.`);
+
+    await this.blogsRepository.delete(id);
+
+    return blogToDeactivate;
+  }
 }
