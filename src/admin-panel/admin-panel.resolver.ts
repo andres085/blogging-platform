@@ -53,6 +53,14 @@ export class AdminPanelResolver {
     return this.adminPanelService.deactivateBlog(seachBlogByIDArg.blogId);
   }
 
+  @Mutation(() => Blog, { name: 'deleteBlog' })
+  async deleteBlog(
+    @CurrentUser([ValidRoles.admin]) _: User,
+    @Args() seachBlogByIDArg: SearchBlogByIDArg,
+  ): Promise<Blog> {
+    return this.adminPanelService.deleteBlog(seachBlogByIDArg.blogId);
+  }
+
   @Mutation(() => User, { name: 'deleteUser' })
   async deleteUser(
     @Args() deleteUserArg: DeleteUserArg,
