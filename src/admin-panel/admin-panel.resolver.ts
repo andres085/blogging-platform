@@ -60,4 +60,12 @@ export class AdminPanelResolver {
   ): Promise<User> {
     return this.usersService.deleteUser(deleteUserArg.id);
   }
+
+  @Mutation(() => User, { name: 'deactivateUser' })
+  async deactivateUser(
+    @Args() deleteUserArg: DeleteUserArg,
+    @CurrentUser([ValidRoles.admin]) _: User,
+  ): Promise<User> {
+    return this.usersService.remove(deleteUserArg.id);
+  }
 }
