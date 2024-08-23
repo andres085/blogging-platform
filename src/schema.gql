@@ -46,6 +46,29 @@ type User {
   blogsCountByUser: Int!
 }
 
+type Flag {
+  id: ID!
+  entityType: EntityType!
+  entityId: ID!
+  userId: ID!
+  reason: String!
+  timeStamp: String!
+  status: FlagStatus!
+}
+
+"""These are the types of entities to flag, a blog post or a comment."""
+enum EntityType {
+  BLOG
+  COMMENT
+}
+
+"""These are the status of a flag that a blog post or a comment can have."""
+enum FlagStatus {
+  PENDING
+  REVIEWED
+  DISMISSED
+}
+
 type Query {
   user(id: ID!): User!
   getAllBlogs(tag: BlogTags): [Blog!]!
@@ -75,6 +98,7 @@ type Mutation {
   deleteUser(id: String!): User!
   deactivateUser(id: String!): User!
   changeFeatureBlog(featureBlog: FeatureBlogInput!): Blog!
+  flagContent(createFlagInput: CreateFlagInput!): Flag!
 }
 
 input UpdateUserInput {
@@ -130,6 +154,12 @@ enum ValidRoles {
 input FeatureBlogInput {
   id: String!
   isFeatured: Boolean!
+}
+
+input CreateFlagInput {
+  entityType: EntityType!
+  entityId: ID!
+  reason: String!
 }
 
 type Subscription {
