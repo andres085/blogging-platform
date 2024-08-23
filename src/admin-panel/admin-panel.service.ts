@@ -41,6 +41,7 @@ export class AdminPanelService {
     const foundBlog = await this.blogsRepository.preload({
       id,
       isActive: false,
+      publishedAt: null,
     });
 
     return this.blogsRepository.save(foundBlog);
