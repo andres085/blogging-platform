@@ -75,6 +75,7 @@ type Query {
   getBlog(id: ID!): Blog!
   findAllUsers: [User!]!
   adminFindAllBlogs(tag: String, isActive: Boolean): [Blog!]!
+  findFlagsByEntityAndStatus(entityType: EntityType, status: FlagStatus): [Flag!]!
 }
 
 type Mutation {
