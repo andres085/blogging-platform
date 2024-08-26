@@ -16,6 +16,7 @@ import { SearchBlogByIDArg } from './dto/args/search-blog-arg';
 import { FeatureBlogInput } from './dto/inputs/feature-blog.input';
 import { PromoteUserInput } from './dto/inputs/promote-user.input';
 import { UpdateFlagStatusArgs } from './dto/inputs/update-flag.input';
+import { ParsedFlag } from './dto/responses/flags-response';
 
 @Resolver()
 @UseGuards(JwtAuthGuard)
@@ -89,11 +90,11 @@ export class AdminPanelResolver {
     return this.adminPanelService.changeFeatureBlog(featureBlog);
   }
 
-  @Query(() => [Flag], { name: 'findFlagsByEntityAndStatus' })
+  @Query(() => [ParsedFlag], { name: 'findFlagsByEntityAndStatus' })
   async findAllFlags(
     @CurrentUser([ValidRoles.admin]) _: User,
     @Args() searchFlagsArgs: SearchFlagsArgs,
-  ): Promise<Flag[]> {
+  ): Promise<ParsedFlag[]> {
     return this.flagsService.findFlags(searchFlagsArgs);
   }
 

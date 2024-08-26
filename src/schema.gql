@@ -69,13 +69,26 @@ enum FlagStatus {
   DISMISSED
 }
 
+type ParsedFlag {
+  id: ID!
+  entityType: String!
+  entityId: String!
+  userId: String!
+  flaggedType: FlaggedUnion
+  reason: String!
+  timeStamp: String!
+  status: String!
+}
+
+union FlaggedUnion = Blog | Comment
+
 type Query {
   user(id: ID!): User!
   getAllBlogs(tag: BlogTags): [Blog!]!
   getBlog(id: ID!): Blog!
   findAllUsers: [User!]!
   adminFindAllBlogs(tag: String, isActive: Boolean): [Blog!]!
-  findFlagsByEntityAndStatus(entityType: EntityType, status: FlagStatus): [Flag!]!
+  findFlagsByEntityAndStatus(entityType: EntityType, status: FlagStatus): [ParsedFlag!]!
 }
 
 type Mutation {
