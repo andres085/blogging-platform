@@ -15,7 +15,7 @@ export class Flag {
   entityType: EntityType;
 
   @Field(() => ID)
-  @Column('text')
+  @Column('uuid')
   entityId: string;
 
   @Field(() => ID)
