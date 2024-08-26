@@ -15,6 +15,7 @@ import { DeleteUserArg } from './dto/args/delete-user.args';
 import { SearchBlogByIDArg } from './dto/args/search-blog-arg';
 import { FeatureBlogInput } from './dto/inputs/feature-blog.input';
 import { PromoteUserInput } from './dto/inputs/promote-user.input';
+import { UpdateFlagStatusArgs } from './dto/inputs/update-flag.input';
 
 @Resolver()
 @UseGuards(JwtAuthGuard)
@@ -94,5 +95,13 @@ export class AdminPanelResolver {
     @Args() searchFlagsArgs: SearchFlagsArgs,
   ): Promise<Flag[]> {
     return this.flagsService.findFlags(searchFlagsArgs);
+  }
+
+  @Mutation(() => Flag, { name: 'updateFlagStatus' })
+  async updateFlagStatus(
+    @Args('updateFlagStatusArgs') updateFlagStatusArgs: UpdateFlagStatusArgs,
+    @CurrentUser([ValidRoles.admin]) _: User,
+  ): Promise<Flag> {
+    return this.flagsService.updateFlagStatus(updateFlagStatusArgs);
   }
 }
