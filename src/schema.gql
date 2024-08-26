@@ -99,6 +99,7 @@ type Mutation {
   deleteUser(id: String!): User!
   deactivateUser(id: String!): User!
   changeFeatureBlog(featureBlog: FeatureBlogInput!): Blog!
+  updateFlagStatus(updateFlagStatusArgs: UpdateFlagStatusArgs!): Flag!
   flagContent(createFlagInput: CreateFlagInput!): Flag!
 }
 
@@ -155,6 +156,11 @@ enum ValidRoles {
 input FeatureBlogInput {
   id: String!
   isFeatured: Boolean!
+}
+
+input UpdateFlagStatusArgs {
+  id: ID!
+  status: FlagStatus!
 }
 
 input CreateFlagInput {

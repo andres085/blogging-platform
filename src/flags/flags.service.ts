@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SearchFlagsArgs } from '../admin-panel/dto/args/admin-flag-search.args';
+import { UpdateFlagStatusArgs } from '../admin-panel/dto/inputs/update-flag.input';
 import { CreateFlagInput } from './dto/create-flag.input';
 import { Flag } from './entities/flag.entity';
 
@@ -34,5 +35,18 @@ export class FlagsService {
     }
 
     return await queryBuilder.getMany();
+  }
+
+  async updateFlagStatus(
+    updateFlagStatusArgs: UpdateFlagStatusArgs,
+  ): Promise<Flag> {
+    const foundFlag = await this.flagRepository.preload(updateFlagStatusArgs);
+
+    if (!foundFlag)
+      throw new NotFoundException(
+        `Blog with id ${updateFlagStatusArgs.id} not found.`,
+      );
+
+    return this.flagRepository.save(foundFlag);
   }
 }
