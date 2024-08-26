@@ -4,10 +4,13 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Blog } from '../blogs/entities/blog.entity';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { ValidRoles } from '../common/enums/valid-roles.enum';
+import { Flag } from '../flags/entities/flag.entity';
+import { FlagsService } from '../flags/flags.service';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { AdminPanelService } from './admin-panel.service';
 import { AdminBlogSearchArg } from './dto/args/admin-blog-search.args';
+import { SearchFlagsArgs } from './dto/args/admin-flag-search.args';
 import { DeleteUserArg } from './dto/args/delete-user.args';
 import { SearchBlogByIDArg } from './dto/args/search-blog-arg';
 import { FeatureBlogInput } from './dto/inputs/feature-blog.input';
@@ -19,6 +22,7 @@ export class AdminPanelResolver {
   constructor(
     private readonly adminPanelService: AdminPanelService,
     private readonly usersService: UsersService,
+    private readonly flagsService: FlagsService,
   ) {}
 
   @Query(() => [User], { name: 'findAllUsers' })
@@ -82,5 +86,13 @@ export class AdminPanelResolver {
     @CurrentUser([ValidRoles.admin]) _: User,
   ): Promise<Blog> {
     return this.adminPanelService.changeFeatureBlog(featureBlog);
+  }
+
+  @Query(() => [Flag], { name: 'findFlagsByEntityAndStatus' })
+  async findAllFlags(
+    @CurrentUser([ValidRoles.admin]) _: User,
+    @Args() searchFlagsArgs: SearchFlagsArgs,
+  ): Promise<Flag[]> {
+    return this.flagsService.findFlags(searchFlagsArgs);
   }
 }

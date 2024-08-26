@@ -7,5 +7,6 @@ import { FlagsService } from './flags.service';
 @Module({
   providers: [FlagsResolver, FlagsService],
   imports: [TypeOrmModule.forFeature([Flag])],
+  exports: [FlagsService, TypeOrmModule],
 })
 export class FlagsModule {}
